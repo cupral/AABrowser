@@ -69,6 +69,14 @@
                 android:id="@+id/m_WebView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:id="@+id/m_ProgressBar"
+                android:max="100"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"/>
         </FrameLayout>
 
     </LinearLayout>
