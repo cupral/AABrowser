@@ -35,6 +35,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.google.android.apps.auto.sdk.CarActivity;
 import com.google.android.apps.auto.sdk.CarUiController;
@@ -61,6 +62,7 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
     private WebChromeClient m_WebChromeClient;
     private WebViewClient   m_WebViewClient;
     private Bitmap          m_DefaultVideoPoster;
+    private ProgressBar     m_ProgressBar;
 
     private View            m_CurrentEditable;
 
@@ -86,6 +88,8 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
         InitWebViewClient();
 
         m_DefaultVideoPoster = Bitmap.createBitmap(1, 1, ALPHA_8);
+
+        m_ProgressBar = (ProgressBar) findViewById(R.id.m_ProgressBar);
 
         m_WebView = (WebView)findViewById(R.id.m_WebView);
 
@@ -130,6 +134,7 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
         super.onDestroy();
 
         m_WebView = null;
+        m_ProgressBar = null;
         m_WebChromeClient = null;
         m_WebViewClient = null;
         m_DefaultVideoPoster = null;
@@ -171,6 +176,8 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
             @Override
             public void onProgressChanged(WebView view, int newProgress)
             {
+                m_ProgressBar.setProgress(newProgress);
+                m_ProgressBar.setVisibility(newProgress<100 ? View.VISIBLE : View.INVISIBLE);
                 Log.d(TAG, "onProgressChanged: " + newProgress);
                 super.onProgressChanged(view, newProgress);
             }
