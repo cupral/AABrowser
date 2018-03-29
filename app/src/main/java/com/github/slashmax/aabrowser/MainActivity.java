@@ -1,7 +1,7 @@
 package com.github.slashmax.aabrowser;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 public class MainActivity extends AppCompatActivity
@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BrowserApplication.getInputManager().setDummyView(findViewById(R.id.m_DummyView));
     }
 
     @Override
@@ -22,4 +24,5 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onDestroy");
         super.onDestroy();
     }
+
 }
