@@ -27,11 +27,9 @@ public class BrowserInputManager {
         dummyView = new WeakReference<>(view);
     }
 
-    public void setEditable(final View view) {
-        editable = new WeakReference<>(view);
-    }
+    public void startInput(View editable) {
+        this.editable = new WeakReference<View>(editable);
 
-    public void startInput() {
         final View dummyView = getDummyView();
         if (dummyView != null) {
             ((InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(dummyView, 0);
@@ -43,6 +41,8 @@ public class BrowserInputManager {
         if (dummyView != null) {
             ((InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(dummyView.getWindowToken(), 0);
         }
+
+        editable = null;
     }
 
     public boolean sendKeyEvent(final KeyEvent event) {

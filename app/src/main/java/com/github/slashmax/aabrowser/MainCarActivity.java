@@ -526,6 +526,7 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
         Log.d(TAG, "startInput");
         m_CurrentEditable = view;
         a().startInput(this);
+        BrowserApplication.getInputManager().startInput(m_CurrentEditable);
     }
 
     private void stopInput()
@@ -534,6 +535,7 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
         if (a().isInputActive())
             a().stopInput();
         m_CurrentEditable = null;
+        BrowserApplication.getInputManager().stopInput();
 
         if (m_WebView.getLayoutParams().height != MATCH_PARENT)
         {
