@@ -32,13 +32,20 @@ public class BrowserInputManager {
 
         final View dummyView = getDummyView();
         if (dummyView != null) {
-            ((InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(dummyView, 0);
+            System.out.println("BrowserInputManager.startInput");
+            final InputMethodManager inputMethodManager = (InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            //inputMethodManager.showSoftInput(dummyView, 0);
+            //inputMethodManager.showSoftInputFromInputMethod(dummyView.getWindowToken(), 0);
+            dummyView.requestFocus();
+            inputMethodManager.toggleSoftInput(0,0);
+            inputMethodManager.restartInput(dummyView);
         }
     }
 
     public void stopInput() {
         final View dummyView = getDummyView();
         if (dummyView != null) {
+            System.out.println("BrowserInputManager.stopInput");
             ((InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(dummyView.getWindowToken(), 0);
         }
 
@@ -46,6 +53,7 @@ public class BrowserInputManager {
     }
 
     public boolean sendKeyEvent(final KeyEvent event) {
+        System.out.println("BrowserInputManager.sendKeyEvent");
         final View editable = getEditable();
         if (editable != null) {
             boolean ok = editable.dispatchKeyEvent(event);
@@ -58,6 +66,7 @@ public class BrowserInputManager {
     }
 
     public boolean deleteSurroundingText(final int beforeLength, final int afterLength) {
+        System.out.println("BrowserInputManager.deleteSurroundingText");
         final View editable = getEditable();
         if (editable != null) {
             boolean ok = editable.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
