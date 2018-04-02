@@ -20,6 +20,9 @@ import android.view.View;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.webkit.CookieManager;
+import android.webkit.GeolocationPermissions;
+import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,6 +38,8 @@ import com.google.android.apps.auto.sdk.SearchCallback;
 import com.google.android.apps.auto.sdk.SearchItem;
 import com.google.android.gms.car.input.CarEditable;
 import com.google.android.gms.car.input.CarEditableListener;
+
+import java.util.Arrays;
 
 import static android.graphics.Bitmap.Config.ALPHA_8;
 import static android.media.AudioManager.AUDIOFOCUS_GAIN;
@@ -96,6 +101,9 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
         m_WebView = (WebView)findViewById(R.id.m_WebView);
 
         m_WebView.getSettings().setJavaScriptEnabled(true);
+        m_WebView.getSettings().setDomStorageEnabled(true);
+        m_WebView.getSettings().setDatabaseEnabled(true);
+        m_WebView.getSettings().setGeolocationEnabled(true);
 
         m_WebView.getSettings().setUseWideViewPort(true);
         m_WebView.getSettings().setLoadWithOverviewMode(true);
@@ -111,6 +119,8 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
 
         m_WebView.setWebChromeClient(m_WebChromeClient);
         m_WebView.setWebViewClient(m_WebViewClient);
+
+        CookieManager.getInstance().setAcceptThirdPartyCookies(m_WebView, true);
 
         m_WebView.setOnTouchListener(this);
 
@@ -322,6 +332,15 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
             {
                 Log.d(TAG, "getDefaultVideoPoster");
                 return m_DefaultVideoPoster;
+            }
+
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                callback.invoke(origin, true, false);
+            }
+
+            @Override
+            public void onPermissionRequest(PermissionRequest request) {
+                request.grant(request.getResources());
             }
         };
     }
