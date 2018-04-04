@@ -39,8 +39,6 @@ import com.google.android.apps.auto.sdk.SearchItem;
 import com.google.android.gms.car.input.CarEditable;
 import com.google.android.gms.car.input.CarEditableListener;
 
-import java.util.Arrays;
-
 import static android.graphics.Bitmap.Config.ALPHA_8;
 import static android.media.AudioManager.AUDIOFOCUS_GAIN;
 import static android.support.car.media.CarAudioManager.CAR_AUDIO_USAGE_DEFAULT;
