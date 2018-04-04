@@ -12,41 +12,38 @@ import java.lang.ref.WeakReference;
  */
 
 public class BrowserInputManager {
-    private WeakReference<View> dummyView;
+    private WeakReference<View> inputView;
     private WeakReference<View> editable;
 
-    private View getDummyView() {
-        return dummyView == null ? null : dummyView.get();
+    private View getInputView() {
+        return inputView == null ? null : inputView.get();
     }
 
     private View getEditable() {
         return editable == null ? null : editable.get();
     }
 
-    public void setDummyView(final View view) {
-        dummyView = new WeakReference<>(view);
+    public void setInputView(final View view) {
+        inputView = new WeakReference<>(view);
     }
 
     public void startInput(View editable) {
         this.editable = new WeakReference<View>(editable);
 
-        final View dummyView = getDummyView();
+        final View dummyView = getInputView();
         if (dummyView != null) {
             System.out.println("BrowserInputManager.startInput");
             final InputMethodManager inputMethodManager = (InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            //inputMethodManager.showSoftInput(dummyView, 0);
-            //inputMethodManager.showSoftInputFromInputMethod(dummyView.getWindowToken(), 0);
-            dummyView.requestFocus();
-            inputMethodManager.toggleSoftInput(0,0);
-            inputMethodManager.restartInput(dummyView);
+            inputMethodManager.showSoftInput(dummyView, 0 );
         }
     }
 
     public void stopInput() {
-        final View dummyView = getDummyView();
+        final View dummyView = getInputView();
         if (dummyView != null) {
             System.out.println("BrowserInputManager.stopInput");
-            ((InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(dummyView.getWindowToken(), 0);
+            final InputMethodManager inputMethodManager = (InputMethodManager) dummyView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromInputMethod(dummyView.getWindowToken(), 0);
         }
 
         editable = null;
