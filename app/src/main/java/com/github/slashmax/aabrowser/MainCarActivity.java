@@ -57,6 +57,8 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
     private static final String DEFAULT_LINUX_AGENT     = "Mozilla/5.0 (Linux;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.111 Safari/537.36";
     private static final String DEFAULT_WINDOWS_AGENT   = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.71 Safari/537.36";
 
+    private static final int DISPLAY_MIN_SIZE = 180;
+
     private Car             m_Car;
 
     private DrawerLayout    m_DrawerLayout;
@@ -222,6 +224,10 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
     {
         Log.d(TAG, "onWindowFocusChanged");
         super.onWindowFocusChanged(b, b1);
+
+        if (!a().isInputActive()){
+            stopInput();
+        }
     }
 
     @Override
@@ -421,7 +427,7 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "m_Keyboard.onClick");
-                    startInput(m_WebView);
+                    startInput(m_WebView, 0);
                     m_DrawerLayout.closeDrawers();
                 }
             });
@@ -486,11 +492,7 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
             WebView.HitTestResult hitTest = m_WebView.getHitTestResult();
             if (hitTest != null && hitTest.getType() == WebView.HitTestResult.EDIT_TEXT_TYPE)
             {
-                m_WebView.getLayoutParams().height = 180;
-                m_WebView.requestLayout();
-                if (event.getY() > 180)
-                    m_WebView.scrollBy(0, (int) event.getY() - 100);
-                startInput(m_WebView);
+                startInput(m_WebView, event.getY());
             }
             else
             {
@@ -540,10 +542,19 @@ public class MainCarActivity extends CarActivity implements CarEditable , View.O
         Log.d(TAG, "setInputEnabled: " + b);
     }
 
-    private void startInput(View view)
+    private void startInput(View view, float pos)
     {
         Log.d(TAG, "startInput");
         m_CurrentEditable = view;
+
+        if (m_WebView.getLayoutParams().height == MATCH_PARENT) {
+            m_CurrentEditable.getLayoutParams().height = DISPLAY_MIN_SIZE;
+            m_CurrentEditable.requestLayout();
+            if (pos > DISPLAY_MIN_SIZE) {
+                m_WebView.scrollBy(0, (int) pos - 100);
+            }
+        }
+
         a().startInput(this);
         BrowserApplication.getInputManager().startInput(m_CurrentEditable);
     }
